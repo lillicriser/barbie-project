@@ -1,0 +1,30 @@
+p{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#top{
+    text-decoration: underline;
+}
+
+.emphasizedtext{
+    font-style: italic;
+    color: rgb(156, 6, 156);
+}
+
+body{
+    background-color: lightpink;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+    border: 5px solid plum;
+    margin: 20px;
+    padding: 10px;
+}
+
+.centered-list{
+    padding-left: 0;
+    list-style-position: outside;
+    margin: 0 auto;
+    display: table;
+    text-align: left;
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Barbie Bracket Game</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to right, #ffc0cb, #fff0f5);
+      color: #d63384;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .barbie-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .barbie-card {
+      border: 3px solid #d63384;
+      border-radius: 15px;
+      padding: 10px;
+      width: 200px;
+      cursor: pointer;
+      background-color: white;
+      box-shadow: 0 0 10px #e91e63;
+      transition: transform 0.3s;
+    }
+
+    .barbie-card:hover {
+      transform: scale(1.05);
+    }
+
+    .barbie-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    #winner {
+      font-size: 2rem;
+      margin-top: 30px;
+      color: #e91e63;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>✨ Barbie Bracket Showdown ✨</h1>
+  <p>Click your favorite to move them to the next round!</p>
+
+  <div class="barbie-container" id="barbie-container"></div>
+  <div id="winner"></div>
+  <button id="restartBtn" style="display:none;">Play Again</button>
+
+  <script>
+    const barbies = [
+      { name: "Astronaut Barbie", img: "https://i.imgur.com/qC5Eqp4.jpg" },
+      { name: "Doctor Barbie", img: "https://i.imgur.com/3YspN1k.jpg" },
+      { name: "Mermaid Barbie", img: "https://i.imgur.com/kjLbCUp.jpg" },
+      { name: "Fashionista Barbie", img: "https://i.imgur.com/Dc4ZpMl.jpg" },
+      { name: "Cowgirl Barbie", img: "https://i.imgur.com/6ViDNUj.jpg" },
+      { name: "Chef Barbie", img: "https://i.imgur.com/lrToQtO.jpg" },
+      { name: "President Barbie", img: "https://i.imgur.com/5KfKk2V.jpg" },
+      { name: "Rockstar Barbie", img: "https://i.imgur.com/Ms5qIuH.jpg" }
+    ];
+
+    let currentRound = [];
+    let nextRound = [];
+
+    const container = document.getElementById('barbie-container');
+    const winnerDiv = document.getElementById('winner');
+    const restartBtn = document.getElementById('restartBtn');
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function startGame() {
+      winnerDiv.textContent = "";
+      restartBtn.style.display = "none";
+      currentRound = shuffle([...barbies]);
+      nextRound = [];
+      renderMatch();
+    }
+
+    function renderMatch() {
+      container.innerHTML = "";
+
+      if (currentRound.length === 1 && nextRound.length === 0) {
+        showWinner(currentRound[0]);
+        return;
+      }
+
+      if (currentRound.length < 2) {
+        currentRound = nextRound;
+        nextRound = [];
+      }
+
+      const match = currentRound.splice(0, 2);
+
+      match.forEach(barbie => {
+        const card = document.createElement('div');
+        card.className = 'barbie-card';
+        card.innerHTML = `
+          <img src="${barbie.img}" alt="${barbie.name}">
+          <h3>${barbie.name}</h3>
+        `;
+        card.onclick = () => {
+          nextRound.push(barbie);
+          renderMatch();
+        };
+        container.appendChild(card);
+      });
+    }
+
+    function showWinner(barbie) {
+  container.innerHTML = "";
+
+  winnerDiv.innerHTML = `👑 <strong>${barbie.name}</strong> is the ultimate Barbie champion! 👑`;
+
+  // Create the congratulations textbox
+  const congratsBox = document.createElement('input');
+  congratsBox.type = 'text';
+  congratsBox.readOnly = true;
+  congratsBox.value = `🎉 Congratulations! Your favorite Barbie is ${barbie.name}! 🎉`;
+  congratsBox.style.marginTop = '20px';
+  congratsBox.style.padding = '10px';
+  congratsBox.style.border = '2px solid #d63384';
+  congratsBox.style.borderRadius = '10px';
+  congratsBox.style.width = '80%';
+  congratsBox.style.fontSize = '1rem';
+  congratsBox.style.textAlign = 'center';
+  congratsBox.style.backgroundColor = '#fff0f5';
+  congratsBox.style.color = '#e91e63';
+  congratsBox.style.boxShadow = '0 0 10px #e91e63';
+
+  container.appendChild(congratsBox);
+
+  restartBtn.style.display = "inline-block";
+}
+
+
+    restartBtn.onclick = startGame;
+
+    startGame();
+  </script>
+</body>
+</html>
